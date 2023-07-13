@@ -3,14 +3,10 @@
 <head>
 	<title>bob's club</title>
 	<script type="text/javascript">
-		fetch('../registry.json')
-			.then((response) => response.json())
-			.then((registry) => {
-				const entries = Object.entries(registry);
-				const index = Math.floor(Math.random() * entries.length);
-				const [_id, link] = entries[index];
-				window.location.href = link;
-			});
+		const entries = $ENTRIES;
+		const index = Math.floor(Math.random() * entries.length);
+		const {link} = entries[index];
+		window.location.href = link;
 	</script>
 </head>
 <body>
