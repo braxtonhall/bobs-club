@@ -59,8 +59,8 @@ const writeRedirect = (src, dst) =>
 const writeRing = (ring) =>
 	Promise.all(
 		ring.flatMap(({pred, current, succ}) => [
-				writeRedirect(`/${current.id}/pred/index.html`, `/${pred.id}`),
-				writeRedirect(`/${current.id}/succ/index.html`, `/${succ.id}`),
+				writeRedirect(`/${current.id}/pred/index.html`, `../../${pred.id}`),
+				writeRedirect(`/${current.id}/succ/index.html`, `../../${succ.id}`),
 				writeRedirect(`/${current.id}/index.html`, current.link),
 			]
 		)
