@@ -6,15 +6,31 @@ const STATIC_DIR = "./static";
 const TEMPLATE_DIR = "./templates";
 
 /**
- * @type  {Array<{id: string, link: string}>}
+ * @return {Array<{id: string, link: string}>}
  */
-const registryList = Object.entries(registry).map(([id, link]) => ({id, link}));
+const getRegistryList = () =>
+	Object.entries(registry)
+		.map(([id, link]) => ({id, link}))
+		.filter(isValidEntry);
 
 /**
- *
+ * @param entry {{id: string, link: string}}
+ * @return {boolean}
+ */
+const isValidEntry = (entry) => {
+	try {
+		new URL(entry.link);
+		return /[a-zA-Z0-9-_]+/.test(entry.id);
+	} catch {
+		return false;
+	}
+};
+
+/**
+ * @param registryList {Array<{id: string, link: string}>}
  * @return Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>
  */
-const attachNeighbours = () =>
+const attachNeighbours = (registryList) =>
 	registryList.map(
 		(entry, index) => ({
 			pred: registryList[(index - 1 + registryList.length) % registryList.length],
@@ -61,7 +77,7 @@ const writeRing = (ring) =>
 	Promise.all(
 		ring.flatMap(({pred, current, succ}) => [
 				writeStaticRedirect(`/site/${current.id}/pred/index.html`, `../../${pred.id}`),
-				writeRandomRedirect(`/site/${current.id}/random/index.html`, registryList.filter(({id}) => id !== current.id)),
+				writeRandomRedirect(`/site/${current.id}/random/index.html`, getRegistryList().filter(({id}) => id !== current.id)),
 				writeStaticRedirect(`/site/${current.id}/succ/index.html`, `../../${succ.id}`),
 				writeStaticRedirect(`/site/${current.id}/index.html`, current.link),
 			]
@@ -77,7 +93,8 @@ const copyStaticFiles = () =>
 const main = () =>
 	cleanBuild()
 		.then(copyStaticFiles)
-		.then(() => writeRandomRedirect("/random/index.html", registryList))
+		.then(() => writeRandomRedirect("/random/index.html", getRegistryList()))
+		.then(() => getRegistryList())
 		.then(attachNeighbours)
 		.then(writeRing);
 
