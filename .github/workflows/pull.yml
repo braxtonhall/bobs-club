@@ -1,13 +1,10 @@
-name: publish
+ame: Check people
 
 on:
-    push:
-        branches: [ "main" ]
-
+    pull_request:
+        branches:
+            - main
     workflow_dispatch:
-
-permissions:
-    contents: write
 
 jobs:
     build:
@@ -15,9 +12,10 @@ jobs:
         strategy:
             matrix:
                 node: [ 16.x ]
+
         steps:
             -   name: checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v2
 
             -   name: install node ${{ matrix.node }}
                 uses: actions/setup-node@v1
@@ -27,10 +25,5 @@ jobs:
             -   name: install packages
                 run: yarn install
 
-            -   name: build
-                run: yarn build
-
-            -   name: deploy
-                uses: JamesIves/github-pages-deploy-action@v4
-                with:
-                    folder: build
+            -   name: validate registry
+                run: yarn validate
