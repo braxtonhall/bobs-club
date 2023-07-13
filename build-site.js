@@ -1,26 +1,38 @@
 const fs = require("fs-extra");
-const path = require("path");
+const registry = require("./registry.json");
 
 const BUILD_DIR = "./build";
 const STATIC_DIR = "./static";
-const REGISTRY_FILENAME = "registry.json";
+const TEMPLATE_DIR = "./templates";
 
 /**
- * @returns {Promise<{[id: string]: string}>}
- */
-const getRegistry = () =>
-	fs.readJson(path.join(STATIC_DIR, REGISTRY_FILENAME));
-
-/**
- * @returns {Promise<Array<{id: string, link: string}>>}
+ * @return {Array<{id: string, link: string}>}
  */
 const getRegistryList = () =>
-	getRegistry()
-		.then((registry) => Object.entries(registry))
-		.then((entries) => entries.map(([id, link]) => ({id, link})));
+	Object.entries(registry)
+		.map(([id, link]) => ({id, link}))
+		.filter(isValidEntry);
 
 /**
- *
+ * @param entry {{id: string, link: string}}
+ * @return {boolean}
+ */
+const isValidEntry = (entry) => {
+	try {
+		new URL(entry.link);
+		return /[a-zA-Z0-9-_]+/.test(entry.id);
+	} catch {
+		return false;
+	}
+};
+
+/**
+ * @param entry {{id: string, link: string}}
+ * @return {string}
+ */
+const toListItem = (entry) => `<li><a href="${entry.link}">${entry.id}</a></li>`;
+
+/**
  * @param registryList {Array<{id: string, link: string}>}
  * @return Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>
  */
@@ -33,25 +45,42 @@ const attachNeighbours = (registryList) =>
 		})
 	);
 
-const getRedirectHtml = (dst) =>
-`<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>bob's club</title>
-		<meta http-equiv="refresh" content="0; url='${dst}'" />
-		<script type="text/javascript">
-			window.location.href = "${dst}";
-		</script>
-	</head>
-	<body>
-		<p>thank you for visiting <a href="/">bob's club</a>!</p>
-		<p>if you're not redirected automatically, <a href="${dst}">click here</a></p>
-	</body>
-</html>
-`
+const getStaticRedirectHtml = (dst) =>
+	renderTemplate('redirect-static.html', {DST: dst});
 
-const writeRedirect = (src, dst) =>
-	fs.outputFile(`${BUILD_DIR}/${src}`, getRedirectHtml(dst));
+const getRandomRedirectHtml = (entries) =>
+	renderTemplate('redirect-random.html', {ENTRIES: JSON.stringify(entries)});
+
+/**
+ *
+ * @param name {string}
+ * @param env {Record<string, string>}
+ */
+const renderTemplate = (name, env) =>
+	fs.readFile(`${TEMPLATE_DIR}/${name}`)
+		.then((buffer) => buffer.toString())
+		.then(
+			(content) =>
+				Object.entries(env).reduce(
+					(render, [key, value]) =>
+						render.replaceAll(`$${key}`, value),
+					content
+				)
+		);
+
+const writeStaticRedirect = (src, dst) =>
+	getStaticRedirectHtml(dst)
+		.then((render) => fs.outputFile(`${BUILD_DIR}/${src}`, render));
+
+const writeRandomRedirect = (src, entries) =>
+	getRandomRedirectHtml(entries)
+		.then((render) => fs.outputFile(`${BUILD_DIR}/${src}`, render));
+
+const writeDirectory = (src) =>
+	renderTemplate(
+		'directory.html',
+		{MEMBERS: getRegistryList().map(toListItem).join('\n')}
+	).then((render) => fs.outputFile(`${BUILD_DIR}/${src}`, render));
 
 /**
  * @param ring {Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>}
@@ -59,9 +88,10 @@ const writeRedirect = (src, dst) =>
 const writeRing = (ring) =>
 	Promise.all(
 		ring.flatMap(({pred, current, succ}) => [
-				writeRedirect(`/${current.id}/pred/index.html`, `../../${pred.id}`),
-				writeRedirect(`/${current.id}/succ/index.html`, `../../${succ.id}`),
-				writeRedirect(`/${current.id}/index.html`, current.link),
+				writeStaticRedirect(`/site/${current.id}/pred/index.html`, `../../${pred.id}`),
+				writeRandomRedirect(`/site/${current.id}/random/index.html`, getRegistryList().filter(({id}) => id !== current.id)),
+				writeStaticRedirect(`/site/${current.id}/succ/index.html`, `../../${succ.id}`),
+				writeStaticRedirect(`/site/${current.id}/index.html`, current.link),
 			]
 		)
 	);
@@ -75,7 +105,9 @@ const copyStaticFiles = () =>
 const main = () =>
 	cleanBuild()
 		.then(copyStaticFiles)
-		.then(getRegistryList)
+		.then(() => writeRandomRedirect("/random/index.html", getRegistryList()))
+		.then(() => writeDirectory("/directory/index.html"))
+		.then(() => getRegistryList())
 		.then(attachNeighbours)
 		.then(writeRing);
 
