@@ -27,6 +27,12 @@ const isValidEntry = (entry) => {
 };
 
 /**
+ * @param entry {{id: string, link: string}}
+ * @return {string}
+ */
+const toListItem = (entry) => `<li><a href="${entry.link}">${entry.id}</a></li>`;
+
+/**
  * @param registryList {Array<{id: string, link: string}>}
  * @return Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>
  */
@@ -70,6 +76,12 @@ const writeRandomRedirect = (src, entries) =>
 	getRandomRedirectHtml(entries)
 		.then((render) => fs.outputFile(`${BUILD_DIR}/${src}`, render));
 
+const writeDirectory = (src) =>
+	renderTemplate(
+		'directory.html',
+		{MEMBERS: getRegistryList().map(toListItem).join('\n')}
+	).then((render) => fs.outputFile(`${BUILD_DIR}/${src}`, render));
+
 /**
  * @param ring {Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>}
  */
@@ -94,6 +106,7 @@ const main = () =>
 	cleanBuild()
 		.then(copyStaticFiles)
 		.then(() => writeRandomRedirect("/random/index.html", getRegistryList()))
+		.then(() => writeDirectory("/directory/index.html"))
 		.then(() => getRegistryList())
 		.then(attachNeighbours)
 		.then(writeRing);
