@@ -6,11 +6,20 @@ a webring for friends
 
 1. pick an id
 2. make a PR into this repository, adding your id as a key, and your website as a value to [`registry.json`](./registry.json)
-3. add the following html (or some variation of it) to your website
+3. add one of the following html snippets (or some variation of them) to your website
 
 ```html
 <b>This site is a member of <a href="https://bobs-club.net/">bob's club!</a> check out a friend's website too</b><br>
 <a href="https://bobs-club.net/site/ID/pred">previous site</a> --
 <a href="https://bobs-club.net/site/ID/random">random site</a> --
 <a href="https://bobs-club.net/site/ID/succ">next site</a>
+```
+
+```html
+<span>
+	<a href="https://bobs-club.net/site/ID/pred" title="previous site">&lt;&lt;</a>
+	<a href="https://bobs-club.net/site/ID/random" title="random site">?</a>
+	<a href="https://bobs-club.net/" title="web ring">bob's club</a>
+	<a href="https://bobs-club.net/site/ID/succ" title="next site">&gt;&gt;</a>
+</span>
 ```
