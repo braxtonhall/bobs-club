@@ -20,7 +20,7 @@ const getRegistryList = () =>
 const isValidEntry = (entry) => {
 	try {
 		new URL(entry.link);
-		return /[a-zA-Z0-9-_]+/.test(entry.id);
+		return /[a-zA-Z0-9-_@]+/.test(entry.id);
 	} catch {
 		return false;
 	}
