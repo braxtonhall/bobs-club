@@ -1,4 +1,4 @@
-ame: Check people
+name: validate registry
 
 on:
     pull_request:
