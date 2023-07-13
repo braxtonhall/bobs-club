@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>bob's club</title>
+	<script type="text/javascript">
+		fetch('../registry.json')
+			.then((response) => response.json())
+			.then((registry) => {
+				const entries = Object.entries(registry);
+				const index = Math.floor(Math.random() * entries.length);
+				const [_id, link] = entries[index];
+				window.location.href = link;
+			});
+	</script>
+</head>
+<body>
+<p>thank you for visiting <a href="/">bob's club</a>!</p>
+<p>if you're not redirected automatically, you may not have javascript enabled</p>
+</body>
+</html>
