@@ -5,7 +5,7 @@ a webring for friends
 ## joining bob's club
 
 1. pick an id
-2. make a PR into this repository, adding your id as a key, and your website as a value to [`static/registry.json`](./static/registry.json)
+2. make a PR into this repository, adding your id as a key, and your website as a value to [`registry.json`](./registry.json)
 3. add the following html (or some variation of it) to your website
 
 ```html
