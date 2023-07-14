@@ -71,6 +71,11 @@ const writeDirectory = (src) =>
 		fs.outputFile(`${BUILD_DIR}/${src}`, render),
 	);
 
+const write404 = (src, entries) =>
+	renderTemplate("404.html", {ENTRIES: JSON.stringify(entries)}).then((render) =>
+		fs.outputFile(`${BUILD_DIR}/${src}`, render),
+	);
+
 /**
  * @param ring {Array<{pred: {id: string, link: string}, current: {id: string, link: string}, succ: {id: string, link: string}}>}
  */
@@ -89,15 +94,24 @@ const writeRing = (ring) =>
 
 const cleanBuild = () => fs.remove(BUILD_DIR);
 
+/**
+ * @return {Promise<void>}
+ */
 const copyStaticFiles = () => fs.copy(STATIC_DIR, BUILD_DIR);
 
-const main = () =>
-	cleanBuild()
-		.then(copyStaticFiles)
-		.then(() => writeRandomRedirect("/random/index.html", getRegistryList()))
-		.then(() => writeDirectory("/directory/index.html"))
-		.then(getRegistryList)
-		.then(attachNeighbours)
-		.then(writeRing);
+/**
+ *
+ * @return {Promise<unknown[]>}
+ */
+const writeFiles = () => {
+	const registryList = getRegistryList();
+	const futureWrites = [
+		writeRandomRedirect("/random/index.html", registryList),
+		writeDirectory("/directory/index.html"),
+		write404("404.html", registryList),
+		writeRing(attachNeighbours(registryList)),
+	];
+	return Promise.all(futureWrites);
+};
 
-main().catch(console.error).finally(process.exit);
+cleanBuild().then(copyStaticFiles).then(writeFiles).catch(console.error).finally(process.exit);
