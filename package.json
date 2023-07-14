@@ -12,7 +12,8 @@
 	"scripts": {
 		"build": "node build-site.js",
 		"validate": "node validate-registry.js",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"formatting": "prettier --check ."
 	},
 	"lint-staged": {
 		"*.{yml,md,json,ts,js,html}": "prettier --write"

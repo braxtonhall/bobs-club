@@ -25,5 +25,8 @@ jobs:
             - name: install packages
               run: yarn install
 
+            - name: check formatting
+              run: yarn formatting
+
             - name: validate registry
               run: yarn validate
