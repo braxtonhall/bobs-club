@@ -5,7 +5,7 @@ a webring for friends
 ## joining bob's club
 
 1. pick an id
-2. make a PR into this repository, adding your id as a key, and your website as a value to [`registry.json`](./registry.json)
+2. make a PR into this repository, adding your id as a key, and your website as a value to [`registry.json`](https://github.com/braxtonhall/bobs-club/edit/main/registry.json)
 3. add one of the following html snippets (or some variation of them) to your website
 
 ```html
