@@ -90,7 +90,7 @@
 			const copyExample = (example) => () =>
 				navigator.clipboard.writeText(example.innerText).then(() => alert("copied to clipboard"));
 
-			const isValidId = (id) => /^[a-zA-Z0-9-_@]+$/.test(id);
+			const isValidId = (id) => /^[a-zA-Z0-9-_@]+$/.test(id) && id.toUpperCase() !== "ID";
 
 			const isValidLink = (link) => {
 				try {
