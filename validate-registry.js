@@ -3,7 +3,7 @@ const registry = require("./registry.json");
 const isValidEntry = ([id, link]) => {
 	try {
 		new URL(link);
-		return /[a-zA-Z0-9-_@]+/.test(id);
+		return /^[a-zA-Z0-9-_@]+$/.test(id);
 	} catch {
 		return false;
 	}
