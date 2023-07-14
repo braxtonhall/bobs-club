@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>bob's club</title>
+	</head>
+	<body>
+		<p>404</p>
+		<p>thank you for visiting <a href="/">bob's club</a>! unfortunately, there's nothing here</p>
+	</body>
+	<script>
+		try {
+			const entries = $ENTRIES;
+			const pathname = window.location.pathname;
+			if (/\/site\/ID\/(succ|pred|random)$/.test(pathname) && document.referrer) {
+				const {origin} = new URL(document.referrer);
+				const matchingEntry = entries.find(({link}) => new URL(link).origin === origin);
+				if (matchingEntry) {
+					window.location.href = pathname.replace("ID", matchingEntry.id);
+				}
+			}
+		} catch {}
+	</script>
+</html>
