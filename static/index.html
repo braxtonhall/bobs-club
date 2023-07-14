@@ -1,11 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-	<title>bob's club</title>
-</head>
-<body>
-<p>thank you for visiting bob's club!</p>
-<p><a href="./random">click here</a> to start exploring some fun sites!<br>or <a href="./directory">here</a> to see the full bob's club directory</p>
-<p><a href="https://github.com/braxtonhall/bobs-club">click here</a> to join bob's club!</p>
-</body>
+	<head>
+		<title>bob's club</title>
+	</head>
+	<body>
+		<p>thank you for visiting bob's club!</p>
+		<p>
+			<a href="./random">click here</a> to start exploring some fun sites!<br />or
+			<a href="./directory">here</a> to see the full bob's club directory
+		</p>
+		<details>
+			<summary>joining bob's club</summary>
+			it's easy to join bob's club!
+			<ol>
+				<li>
+					<label for="id-input">pick an id</label>
+					<input id="id-input" value="YOUR_ID" />
+					<span id="id-valid">invalid</span>
+				</li>
+				<li>
+					<label for="link-input">pick your website</label>
+					<input id="link-input" value="https://YOUR_WEBSITE" />
+					<span id="link-valid">invalid</span>
+				</li>
+				<li>
+					add html to your website that looks something like one of these examples
+					<details>
+						<summary>example 1</summary>
+						<pre id="html-example-1"></pre>
+						<button id="copy-html-example-1">copy</button>
+					</details>
+					<details>
+						<summary>example 2</summary>
+						<pre id="html-example-2"></pre>
+						<button id="copy-html-example-2">copy</button>
+					</details>
+				</li>
+				<li>
+					make a pull request in the
+					<a href="https://github.com/braxtonhall/bobs-club">bob's club repo</a>
+					making a change to the
+					<a href="https://github.com/braxtonhall/bobs-club/edit/main/registry.json">registry file</a>
+					<pre id="registry-example"></pre>
+				</li>
+			</ol>
+			<p>that's it! when i see the request (probably quickly) you will be a proud, bob's club member :)</p>
+		</details>
+		<script>
+			const idInput = document.getElementById("id-input");
+			const idInvalid = document.getElementById("id-valid");
+			const linkInput = document.getElementById("link-input");
+			const linkInvalid = document.getElementById("link-valid");
+			const htmlExample1 = document.getElementById("html-example-1");
+			const copyExample1 = document.getElementById("copy-html-example-1");
+			const copyExample2 = document.getElementById("copy-html-example-2");
+			const htmlExample2 = document.getElementById("html-example-2");
+			const registryExample = document.getElementById("registry-example");
+
+			const setHtmlExample1 = (id) => {
+				htmlExample1.innerText = `<b>This site is a member of <a href="https://bobs-club.net/">bob's club!</a> check out a friend's website too</b><br>
+<a href="https://bobs-club.net/site/${id}/pred">previous site</a> --
+<a href="https://bobs-club.net/site/${id}/random">random site</a> --
+<a href="https://bobs-club.net/site/${id}/succ">next site</a>`;
+			};
+
+			const setHtmlExample2 = (id) => {
+				htmlExample2.innerText = `<span>
+  <a href="https://bobs-club.net/site/${id}/pred" title="previous site">&lt;&lt;</a>
+  <a href="https://bobs-club.net/site/${id}/random" title="random site">?</a>
+  <a href="https://bobs-club.net/" title="web ring">bob's club</a>
+  <a href="https://bobs-club.net/site/${id}/succ" title="next site">&gt;&gt;</a>
+</span>`;
+			};
+
+			const setRegistryExample = (id, link) => (registryExample.innerText = `"${id}": "${link}",`);
+
+			const setExamples = () => {
+				const idValid = isValidId(idInput.value);
+				const linkValid = isValidLink(linkInput.value);
+				idInvalid.hidden = idValid;
+				linkInvalid.hidden = linkValid;
+				const displayId = idValid ? idInput.value : "YOUR_ID";
+				const displayLink = linkValid ? linkInput.value : "YOUR_LINK";
+				setHtmlExample1(displayId);
+				setHtmlExample2(displayId);
+				setRegistryExample(displayId, displayLink);
+			};
+
+			const copyExample = (example) => () =>
+				navigator.clipboard.writeText(example.innerText).then(() => alert("copied to clipboard"));
+
+			const isValidId = (id) => /^[a-zA-Z0-9-_@]+$/.test(id) && id.toUpperCase() !== "ID";
+
+			const isValidLink = (link) => {
+				try {
+					new URL(link);
+					return true;
+				} catch {
+					return false;
+				}
+			};
+
+			idInput.addEventListener("input", setExamples);
+			linkInput.addEventListener("input", setExamples);
+			copyExample1.addEventListener("click", copyExample(htmlExample1));
+			copyExample2.addEventListener("click", copyExample(htmlExample2));
+			setExamples();
+		</script>
+	</body>
 </html>
