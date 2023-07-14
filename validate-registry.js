@@ -9,8 +9,7 @@ const isValidEntry = ([id, link]) => {
 	}
 };
 
-const invalidEntries = Object.entries(registry)
-	.filter((entry) => !isValidEntry(entry));
+const invalidEntries = Object.entries(registry).filter((entry) => !isValidEntry(entry));
 
 if (invalidEntries.length) {
 	throw new Error(`Invalid entries detected: ${JSON.stringify(invalidEntries)}`);
