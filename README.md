@@ -6,7 +6,7 @@ a webring for friends
 
 1. pick an id
 2. make a PR into this repository, adding your id as a key, and your website as a value to [`registry.json`](https://github.com/braxtonhall/bobs-club/edit/main/registry.json)
-3. add one of the following html snippets (or some variation of them) to your website
+3. add one of the following html snippets (or some variation of them) to your website. don't forget to replace "ID" with your actual id from the first step
 
 ```html
 <b>This site is a member of <a href="https://bobs-club.net/">bob's club!</a> check out a friend's website too</b><br />
