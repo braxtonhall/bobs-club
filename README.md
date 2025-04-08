@@ -23,3 +23,18 @@ a webring for friends
 	<a href="https://bobs-club.net/site/ID/succ" title="next site">&gt;&gt;</a>
 </span>
 ```
+
+## who gets approved?
+
+to be honest i am not exactly sure.
+
+this started as a little webring for friends.
+for the most part, it still is just that! but i guess if you're someone i don't know, i need to tell you what kind of things i hope for bobs-club to include in the future, right?
+
+so let's say... **hand-made websites that are fun!** websites don't need to have a lot of **stuff**. i will be using my judgement instead of exact rules for now. but i plan to be pretty lenient!
+
+the only kinds of websites i am sure i will **deny** are the following:
+
+1. resumes! there are some resumes already in bobs-club, but i think we have enough and i think they need to add blog posts. if your portfolio doesn't _feel_ like a portfolio, then it gets a pass
+2. link trees! we're more about link cycles here
+3. nsfw content! (which needs no explanation)
