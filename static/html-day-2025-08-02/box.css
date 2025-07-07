@@ -1,0 +1,240 @@
+html {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+body {
+	font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+	margin: 0;
+}
+
+button {
+	height: 32px;
+	font-size: 16px;
+	line-height: 2px;
+	border-radius: 6px;
+	@media (min-width: 193px) {
+		height: 64px;
+		font-size: 32px;
+		line-height: 4px;
+		border-radius: 12px;
+	}
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid;
+	background-color: mediumpurple;
+	color: rgba(255, 255, 255, 0);
+	position: relative;
+	width: 100%;
+	cursor: pointer;
+	&::after {
+		position: absolute;
+		color: black;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+.new-post-submit {
+	margin-top: 8px !important;
+	@media (min-width: 193px) {
+		margin-top: 16px !important;
+	}
+	&::after {
+		content: "✍️";
+	}
+}
+
+.new-post-message {
+	resize: none;
+	height: 40px;
+	border-radius: 6px;
+	@media (min-width: 193px) {
+		border-radius: 12px;
+		height: 80px;
+	}
+}
+
+form.new-post-form {
+	border-radius: 6px;
+	padding: 8px;
+	@media (min-width: 193px) {
+		padding: 16px;
+		border-radius: 12px;
+	}
+	width: 100%;
+	box-sizing: border-box;
+	background-color: darkblue;
+}
+
+form.new-post-form > * {
+	border-width: 0;
+	display: block;
+
+	border-radius: 6px;
+	margin: 4px 0;
+	@media (min-width: 193px) {
+		border-radius: 12px;
+		margin: 8px 0;
+	}
+}
+
+form.new-post-form > textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+tr.post-row {
+	padding: 8px;
+	border-radius: 6px;
+	@media (min-width: 193px) {
+		padding: 16px;
+		border-radius: 12px;
+	}
+	text-align: center;
+	vertical-align: middle;
+	display: grid;
+	background-color: plum;
+	color: darkblue;
+}
+
+.delete-form-submit {
+	background-color: palevioletred;
+	margin-top: 4px;
+	@media (min-width: 193px) {
+		margin-top: 8px;
+	}
+	&::after {
+		content: "🗑️";
+	}
+}
+
+tr.post-row + tr.post-row {
+	margin-top: 1em;
+}
+
+.more-controls-details,
+.new-post-poster-label,
+.new-post-email-label,
+.box-name,
+.post-header {
+	display: none !important;
+}
+
+a.post-date-link {
+	color: unset;
+}
+
+tr.post-row td {
+	padding: 2px;
+	text-align: left;
+}
+
+tr.post-row > td.post-delete {
+	padding: 0;
+}
+
+td.post-delete:not(:has(> form)) {
+	display: none;
+}
+
+tr.post-row td.post-delete > form {
+	padding: 0;
+	margin: 0;
+	width: unset;
+	border: none;
+}
+
+tr.post-row > td.post-message {
+	display: block;
+}
+
+td.post-message > .post-message-content,
+td.post-poster {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+table.post-table {
+	border: none;
+	width: 100%;
+	box-sizing: border-box;
+	border-collapse: collapse;
+}
+
+div.post-message-content {
+	font-size: 25px;
+	@media (min-width: 193px) {
+		font-size: 50px;
+	}
+}
+
+td.post-poster,
+td.post-date {
+	font-size: 10px;
+	@media (min-width: 193px) {
+		font-size: 20px;
+	}
+}
+
+td.post-reply details > summary {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+td.post-reply:has(> details[open]) {
+	display: block;
+}
+
+blockquote.post-parent-content {
+	font-size: 14px;
+	border-radius: 6px;
+	border: 1px dotted;
+	@media (min-width: 193px) {
+		font-size: 28px;
+		border-radius: 12px;
+		border: 2px dotted;
+	}
+	font-style: italic;
+	padding: 0.5em;
+	margin: 0.5em;
+	color: #197398;
+}
+
+blockquote.post-parent-content > a {
+	color: #197398;
+}
+
+input {
+	width: 100%;
+}
+
+.post-reply {
+	display: none;
+}
+
+.new-post-message-label {
+	display: none !important;
+}
+
+.main-controls-form {
+	display: flex;
+	margin-top: 1em;
+	button {
+		flex: 1;
+	}
+	.main-controls-btt::after {
+		content: "☝️";
+	}
+	.main-controls-next::after {
+		content: "👉";
+	}
+	button + button {
+		margin-left: 0.5em;
+	}
+}
