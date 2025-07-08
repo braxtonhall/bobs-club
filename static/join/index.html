@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>lekker filmtjes</title>
+		<meta name="description" content="a group chat" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://bobs-club.net/join/index.html" />
+		<meta property="og:title" content="lekker filmtjes" />
+		<meta property="og:description" content="a group chat" />
+		<style>
+			:root {
+				--width: 100px;
+				--x-speed: 7s;
+				--y-speed: 5s;
+				--transition-speed: 2.2s;
+			}
+
+			@keyframes x {
+				100% {
+					transform: translateX(calc(100vw - var(--width)));
+				}
+			}
+			@keyframes y {
+				100% {
+					transform: translateY(calc(100vh - var(--width)));
+				}
+			}
+
+			html {
+				background-color: plum;
+				display: flex;
+				align-items: safe center;
+				justify-content: safe center;
+			}
+
+			.x {
+				animation: x var(--x-speed) linear infinite alternate;
+			}
+			.y {
+				animation: y var(--y-speed) linear infinite alternate;
+			}
+
+			.qr-code-container {
+				pointer-events: none;
+				position: fixed;
+				visibility: hidden;
+				top: 0;
+				left: 0;
+			}
+
+			.dvd-overlay {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				font-size: 1.5rem;
+				transform: translate(-50%, -50%);
+			}
+
+			.qr-code {
+				width: var(--width);
+				height: var(--width);
+			}
+
+			body:has(a[data-clicked="true"]) .qr-code-container {
+				visibility: visible;
+			}
+
+			b {
+				color: yellow;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+				color: #c7ffc4;
+				border-color: #c7ffc4;
+				border-style: double;
+				padding: 1rem;
+				border-radius: 1rem;
+				position: relative;
+			}
+
+			h1 {
+				margin: 0;
+				font-weight: lighter;
+				font-style: italic;
+				font-size: 4rem;
+				width: fit-content;
+				transform: scale(2, 1) translate(25%, 0);
+			}
+
+			.description {
+				margin: 0;
+				padding-left: 1rem;
+			}
+
+			.rule-container {
+				max-width: 40rem;
+				padding-left: 1rem;
+				padding-right: 1rem;
+				margin: 1rem 1rem 2rem;
+				color: gainsboro;
+				background-color: #3d3dff;
+				border-radius: 1rem;
+				display: flex;
+				& > p {
+					flex: 1;
+					font-size: 1.5rem;
+				}
+			}
+
+			.join {
+				cursor: pointer;
+				position: absolute;
+				right: 1rem;
+				bottom: -1.5rem;
+				button {
+					cursor: pointer;
+					border-radius: 2rem;
+					color: tomato;
+					background-color: cyan;
+					width: 8rem;
+					height: 3rem;
+					font-style: italic;
+					border: none;
+				}
+			}
+
+			.message {
+				color: black;
+				font-size: 1rem;
+				margin: 1rem;
+				font-family: sans-serif;
+				max-width: 20rem;
+				background-color: #c7ffc4;
+				width: fit-content;
+				position: relative;
+				border-radius: 0.5rem;
+				padding: 1rem;
+
+				&.out-of-focus {
+					background-color: #f8fff8;
+					color: #c0c0c0;
+					a {
+						color: #c0c0c0;
+					}
+				}
+
+				> p {
+					margin: 0 0.5rem;
+					& + p {
+						margin-top: 0.5rem;
+					}
+				}
+
+				.message-info {
+					margin-left: 0.5rem;
+					float: right;
+				}
+
+				&:not(.out-of-focus) .message-info {
+					color: #989898;
+					.checkmarks {
+						color: rgba(43, 143, 206, 0.5);
+					}
+				}
+				.reaction {
+					position: absolute;
+					right: 2rem;
+					bottom: -0.8rem;
+					background: white;
+					border-radius: 1rem;
+					padding-left: 0.5rem;
+					padding-right: 0.5rem;
+					color: #989898;
+					font-size: 0.9rem;
+					filter: drop-shadow(0 0 1px black);
+					cursor: pointer;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<h1>lekker filmtjes</h1>
+
+		<p class="description">a whatsapp group chat for watching movies together, like <i>dvd night</i></p>
+
+		<div class="rule-container">
+			<p>if you have a movie screening that you're hosting or attending, post it in the <b>screenings</b> chat</p>
+
+			<div>
+				<div class="message">
+					<p>heyyy all! we're going to see BELLY at EYE!</p>
+					<p>it's 6th SEPTEMBER @ 19</p>
+					<p>
+						<a href="https://www.eyefilm.nl/en/whats-on/belly/1451710"
+							>https://www.eyefilm.nl/en/whats-on/belly/1451710</a
+						>
+						<span class="message-info">16:25 <span class="checkmarks">✔✔</span></span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="rule-container">
+			<div>
+				<div class="message out-of-focus">
+					<p>heyyy all! we're going to see BELLY at EYE!</p>
+					<p>it's 6th SEPTEMBER @ 19</p>
+					<p>
+						<a href="https://www.eyefilm.nl/en/whats-on/belly/1451710"
+							>https://www.eyefilm.nl/en/whats-on/belly/1451710</a
+						>
+						<span class="message-info">16:25 <span class="checkmarks">✔✔</span></span>
+					</p>
+					<div
+						class="reaction"
+						data-next="3"
+						onclick="this.textContent = `🫦 ${this.dataset.next}`; this.dataset.next = Number(this.dataset.next) + 1"
+					>
+						🫦 2
+					</div>
+				</div>
+			</div>
+
+			<p>react to a screening to rsvp</p>
+		</div>
+
+		<div class="rule-container">
+			<p>please keep all chit chat in the <b>chit chat</b> channel</p>
+
+			<div>
+				<div class="message">
+					<p>
+						let's goooo belllyyyyyyyyyyyyy
+						<span class="message-info">16:29 <span class="checkmarks">✔✔</span></span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<a
+			class="join"
+			onclick="this.dataset.clicked = String(true)"
+			target="_blank"
+			href="https://chat.whatsapp.com/IBuTuRqoybsCzCbZM9locn"
+			><button>join 📀</button></a
+		>
+
+		<div class="qr-code-container x">
+			<div class="y">
+				<img
+					src="data:image/png;base64,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"
+					alt="qr code to join"
+					class="qr-code"
+				/>
+				<span class="dvd-overlay">📀</span>
+			</div>
+		</div>
+	</body>
+</html>
