@@ -219,7 +219,8 @@ input {
 }
 
 .new-post-message-label {
-	display: none !important;
+	color: white;
+	margin-top: 0 !important;
 }
 
 .main-controls-form {
