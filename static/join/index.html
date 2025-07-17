@@ -81,7 +81,7 @@
 				height: var(--width);
 			}
 
-			body:has(a[data-clicked="true"]) .qr-code-container {
+			body:has(#show-qr:checked) .qr-code-container {
 				visibility: visible;
 			}
 
@@ -145,20 +145,49 @@
 				}
 			}
 
-			.join {
-				cursor: pointer;
+			.join-container {
 				position: absolute;
 				right: 1rem;
 				bottom: -1.5rem;
-				button {
+
+				.join {
+					&.this-device {
+						button {
+							background-color: cyan;
+						}
+					}
+					&.another-device {
+						position: relative;
+						input {
+							pointer-events: none;
+							cursor: pointer;
+							margin: 0;
+							opacity: 0;
+							position: absolute;
+							left: 0;
+							top: 0;
+							width: 100%;
+							height: 100%;
+						}
+						button {
+							background-color: antiquewhite;
+							border-color: cyan;
+							border-style: solid;
+						}
+					}
 					cursor: pointer;
-					border-radius: 2rem;
-					color: tomato;
-					background-color: cyan;
 					width: 8rem;
 					height: 3rem;
-					font-style: italic;
-					border: none;
+					display: inline-block;
+					button {
+						cursor: pointer;
+						border-radius: 2rem;
+						color: tomato;
+						width: 100%;
+						height: 100%;
+						font-style: italic;
+						border: none;
+					}
 				}
 			}
 
@@ -281,13 +310,20 @@
 					</div>
 				</div>
 
-				<a
-					class="join"
-					onclick="this.dataset.clicked = String(true)"
-					target="_blank"
-					href="https://chat.whatsapp.com/IBuTuRqoybsCzCbZM9locn"
-					><button>join 📀</button></a
-				>
+				<div class="join-container">
+					<label class="join another-device" for="show-qr" title="whatsapp qr code">
+						<input id="show-qr" type="radio" />
+						<button>join from another device 📺</button></label
+					>
+
+					<a
+						class="join this-device"
+						target="_blank"
+						href="https://chat.whatsapp.com/IBuTuRqoybsCzCbZM9locn"
+						title="whatsapp link"
+						><button>join from this device 📀</button></a
+					>
+				</div>
 
 				<div class="qr-code-container x">
 					<div class="y">
