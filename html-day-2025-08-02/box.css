@@ -256,7 +256,9 @@ input {
 }
 
 .post-reply {
-	display: none;
+	form {
+		margin-top: 1rem;
+	}
 }
 
 .new-post-message-label {
