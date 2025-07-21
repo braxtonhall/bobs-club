@@ -226,6 +226,7 @@ td.post-date {
 td.post-reply details > summary {
 	cursor: pointer;
 	text-decoration: underline;
+	font-size: small;
 }
 
 td.post-reply:has(> details[open]) {
