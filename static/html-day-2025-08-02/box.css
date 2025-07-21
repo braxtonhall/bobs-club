@@ -255,6 +255,10 @@ input {
 	width: 100%;
 }
 
+td.post-delete:has(> form) ~ .post-reply {
+	display: none;
+}
+
 .post-reply {
 	form {
 		margin-top: 1rem;
