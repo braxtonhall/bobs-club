@@ -117,9 +117,50 @@ tr.post-row + tr.post-row {
 	margin-top: 1em;
 }
 
-.more-controls-details,
-.new-post-poster-label,
+input::placeholder {
+	color: transparent;
+}
+
+.box-name {
+	color: transparent;
+	position: relative;
+
+	&::after {
+		content: "guestbook";
+		position: absolute;
+		left: 0;
+		color: white;
+	}
+}
+
+.new-post-form {
+	color: white;
+}
+
+.new-post-poster,
+.new-post-email {
+	margin-top: 0;
+}
+
 .new-post-email-label,
+.new-post-poster-label {
+	font-size: small;
+	margin-bottom: 0;
+}
+
+.new-post-email-label {
+	color: transparent;
+	position: relative;
+
+	&::after {
+		content: "email (will not be shown)";
+		position: absolute;
+		left: 0;
+		color: white;
+	}
+}
+
+.more-controls-details,
 .box-name,
 .post-header {
 	display: none !important;
@@ -185,6 +226,7 @@ td.post-date {
 td.post-reply details > summary {
 	cursor: pointer;
 	text-decoration: underline;
+	font-size: small;
 }
 
 td.post-reply:has(> details[open]) {
@@ -202,7 +244,7 @@ blockquote.post-parent-content {
 	}
 	font-style: italic;
 	padding: 0.5em;
-	margin: 0.5em;
+	margin: 0;
 	color: #197398;
 }
 
@@ -214,8 +256,14 @@ input {
 	width: 100%;
 }
 
-.post-reply {
+td.post-delete:has(> form) ~ .post-reply {
 	display: none;
+}
+
+.post-reply {
+	form {
+		margin-top: 1rem;
+	}
 }
 
 .new-post-message-label {
