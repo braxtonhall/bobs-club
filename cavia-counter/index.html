@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>cavia counter</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
+		<style>
+			@keyframes move-left-left {
+				0% {
+					left: 0;
+				}
+				100% {
+					left: -100%;
+				}
+			}
+
+			@keyframes move-left-right {
+				0% {
+					left: 100%;
+				}
+				100% {
+					left: 0;
+				}
+			}
+
+			@keyframes breathe {
+				0% {
+					opacity: 0.7;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+
+			html {
+				font-family: "Courier New", monospace;
+				background: #000000;
+			}
+
+			main {
+				max-width: calc(4 / 3 * 100vh);
+			}
+
+			main,
+			body {
+				width: 100vw;
+				height: 100vh;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+
+				.counter-section {
+					flex: 1;
+					width: 100%;
+					display: flex;
+					max-height: 20vh;
+					position: relative;
+					box-sizing: border-box;
+
+					& + .counter-section {
+						border-top: solid;
+					}
+
+					.label {
+						position: absolute;
+						overflow: hidden;
+						font-size: 20vh;
+						width: 100%;
+						height: 100%;
+						z-index: 1;
+
+						svg {
+							position: absolute;
+							width: 100%;
+							height: 100%;
+							display: block;
+							fill: lawngreen;
+							font-weight: bold;
+							font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
+						}
+
+						.ticker {
+							background-color: yellow;
+							position: absolute;
+							bottom: 0;
+							font-size: 1rem;
+							width: 100%;
+							min-width: 30rem;
+							overflow: hidden;
+							white-space: nowrap;
+							height: 1rem;
+
+							& > * {
+								line-height: 1rem;
+								vertical-align: center;
+								&:first-child {
+									animation-name: move-left-left;
+								}
+								&:last-child {
+									animation-name: move-left-right;
+								}
+								position: absolute;
+								animation-duration: 7.75s;
+								animation-delay: 0s;
+								animation-timing-function: linear;
+								animation-iteration-count: infinite;
+								width: 100%;
+							}
+						}
+					}
+
+					.overlay {
+						z-index: 2;
+						display: flex;
+						width: 100%;
+						align-items: safe center;
+						.has-counter {
+							flex: 1;
+							display: flex;
+							align-items: safe center;
+							justify-content: safe center;
+						}
+					}
+
+					.control-space {
+						width: 10vh;
+						height: 10vh;
+						margin: 1vh;
+						pointer-events: none;
+					}
+
+					.control {
+						width: 10vh;
+						height: 10vh;
+						margin: 1vh;
+						border: none;
+						border-radius: 0.2rem;
+						opacity: 0.7;
+						cursor: pointer;
+						font-size: 2rem;
+						color: mediumblue;
+						touch-action: manipulation;
+						&:hover {
+							opacity: 1;
+						}
+						&:active {
+							height: 9.5vh;
+						}
+						&.inc {
+							background-color: #ffecbf;
+						}
+						&.dec {
+							background-color: #d5c2dc;
+						}
+						&.reset {
+							background-color: #f3b1b1;
+						}
+					}
+
+					.counter {
+						background: black;
+						font-weight: bold;
+						color: #ffffff;
+					}
+				}
+			}
+
+			.fill {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+
+			#bad {
+				opacity: 0;
+				transition: opacity 300ms;
+				background: linear-gradient(180deg, transparent 0%, rgb(255, 0, 0) 100%);
+			}
+
+			body:has(.counter-section[data-count="0"] .dec:active) #bad {
+				opacity: 1;
+				transition: opacity 0ms;
+			}
+
+			#good {
+				opacity: 0;
+
+				#lights {
+					background: linear-gradient(180deg, transparent 0%, rgba(59, 255, 66, 1) 100%);
+					animation-name: breathe;
+					animation-duration: 2s;
+					animation-delay: 0s;
+					animation-timing-function: ease-in-out;
+					animation-iteration-count: infinite;
+					animation-direction: alternate;
+				}
+			}
+
+			main:before {
+				width: 100%;
+				height: 2px;
+				z-index: 2147483649;
+				background: linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.3) 50%, transparent 75%);
+				opacity: 0.75;
+				animation: unique-scanline 6s linear infinite;
+			}
+
+			main:before,
+			main:after {
+				display: block;
+				pointer-events: none;
+				content: "";
+				position: absolute;
+			}
+
+			main:after {
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 2147483648;
+				background: linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 50%, transparent 90%);
+				background-size: 100% 4px;
+				animation: scanlines 1s steps(60) infinite;
+			}
+
+			@keyframes unique-scanline {
+				0% {
+					transform: translate3d(0, 200000%, 0);
+				}
+			}
+
+			@keyframes scanlines {
+				0% {
+					background-position: 0 50%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<div class="fill" id="bad"></div>
+			<div class="fill" id="good">
+				<div class="fill" id="lights"></div>
+			</div>
+			<div class="counter-section" id="cineville">
+				<div class="label">
+					<svg viewBox="0 0 130 15" preserveAspectRatio="none">
+						<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="30">
+							CINEVILLE
+						</text>
+					</svg>
+					<div class="ticker">
+						<span>
+							&nbsp; &nbsp; filmhuis cavia &#10032; <span class="value"></span> cineville tickets sold
+						</span>
+						<span>
+							&nbsp; &nbsp; filmhuis cavia &#10032; <span class="value"></span> cineville tickets sold
+						</span>
+					</div>
+				</div>
+				<div class="overlay">
+					<button class="control dec">-</button>
+					<div class="has-counter">
+						<div class="counter">
+							<div class="value">10</div>
+						</div>
+					</div>
+					<button class="control inc">+</button>
+				</div>
+			</div>
+			<div class="counter-section" id="pin">
+				<div class="label">
+					<svg viewBox="0 0 85 40" preserveAspectRatio="none">
+						<text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" font-size="70">PIN</text>
+					</svg>
+					<div class="ticker">
+						<span> filmhuis cavia &#10032; <span data-mult="5" class="value"></span> € made with pin </span>
+						<span> filmhuis cavia &#10032; <span data-mult="5" class="value"></span> € made with pin </span>
+					</div>
+				</div>
+				<div class="overlay">
+					<button class="control dec">-</button>
+					<div class="has-counter">
+						<div class="counter">
+							<div class="value">10</div>
+						</div>
+					</div>
+					<button class="control inc">+</button>
+				</div>
+			</div>
+			<div class="counter-section" id="euro">
+				<div class="label">
+					<svg viewBox="0 0 110 40" preserveAspectRatio="none">
+						<text x="50%" y="60%" text-anchor="middle" dominant-baseline="middle" font-size="60">EURO</text>
+					</svg>
+					<div class="ticker">
+						<span>
+							&nbsp; &nbsp; &nbsp; &nbsp; filmhuis cavia &#10032;
+							<span data-mult="5" class="value"></span> € made with cash
+						</span>
+						<span>
+							&nbsp; &nbsp; &nbsp; &nbsp; filmhuis cavia &#10032;
+							<span data-mult="5" class="value"></span> € made with cash
+						</span>
+					</div>
+				</div>
+				<div class="overlay">
+					<button class="control dec">-</button>
+					<div class="has-counter">
+						<div class="counter">
+							<div class="value">10</div>
+						</div>
+					</div>
+					<button class="control inc">+</button>
+				</div>
+			</div>
+			<div class="counter-section" id="other">
+				<div class="label">
+					<svg viewBox="0 0 125 30" preserveAspectRatio="none">
+						<text x="50%" y="60%" text-anchor="middle" dominant-baseline="middle" font-size="50">
+							OTHER
+						</text>
+					</svg>
+				</div>
+				<div class="overlay">
+					<button class="control dec">-</button>
+					<div class="has-counter">
+						<div class="counter">
+							<div class="value">10</div>
+						</div>
+					</div>
+					<button class="control inc">+</button>
+				</div>
+			</div>
+			<div class="counter-section" id="total">
+				<div class="label">
+					<svg viewBox="0 0 130 30" preserveAspectRatio="none">
+						<text
+							x="45%"
+							y="55%"
+							text-anchor="middle"
+							dominant-baseline="middle"
+							font-size="60"
+							font-style="italic"
+							font-family='"Segoe UI", Tahoma, Verdana, sans-serif'
+						>
+							total
+						</text>
+					</svg>
+					<div class="ticker">
+						<span> cavia cavia cavia €€€ cavia cavia cavia </span>
+						<span> cavia cavia cavia €€€ cavia cavia cavia</span>
+					</div>
+				</div>
+				<div class="overlay">
+					<button class="control reset">🗑️</button>
+					<div class="has-counter">
+						<div class="counter">
+							<div class="value">10</div>
+						</div>
+					</div>
+					<div class="control-space"></div>
+				</div>
+			</div>
+		</main>
+		<script>
+			const STORAGE_KEY = "cavia:counter:state";
+			const DEFAULT = {
+				cineville: 0,
+				pin: 0,
+				euro: 0,
+				other: 0,
+			};
+
+			const get = () => {
+				try {
+					return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? DEFAULT;
+				} catch {
+					return DEFAULT;
+				}
+			};
+
+			const save = (state) => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+			const sections = document.getElementsByClassName("counter-section");
+			const values = document.getElementsByClassName("value");
+			const totalValue = document.querySelector("#total .counter .value");
+			const good = document.getElementById("good");
+
+			const render = () => {
+				const state = get();
+				const total = Object.values(state).reduce((a, b) => a + b, 0);
+				if (totalValue) {
+					totalValue.style.fontSize = `${Math.max(total / 5, 0) + 1}rem`;
+				}
+				if (good) {
+					good.style.opacity = String(Math.min(1, total / 30));
+				}
+				for (const value of values) {
+					const type = value.closest(".counter-section").id;
+					if (type === "total") {
+						value.innerText = String(total);
+					} else {
+						if (value.dataset.mult) {
+							value.innerText = String(state[type] * Number(value.dataset.mult));
+						} else {
+							value.innerText = String(state[type]);
+						}
+					}
+				}
+				for (const section of sections) {
+					const type = section.id;
+					if (type === "total") {
+						section.dataset["count"] = String(total);
+					} else {
+						section.dataset["count"] = String(state[type]);
+					}
+				}
+			};
+
+			const onControlClick = (type, inc) => () => {
+				const state = get();
+				state[type] += inc;
+				if (state[type] < 0) {
+					state[type] = 0;
+				}
+				save(state);
+				render();
+			};
+
+			const onResetClick = () => {
+				if (confirm("reset?")) {
+					save(DEFAULT);
+					render();
+				}
+			};
+
+			for (const control of document.querySelectorAll(".control.inc")) {
+				const type = control.closest(".counter-section").id;
+				control.addEventListener("click", onControlClick(type, 1));
+			}
+
+			for (const control of document.querySelectorAll(".control.dec")) {
+				const type = control.closest(".counter-section").id;
+				control.addEventListener("click", onControlClick(type, -1));
+			}
+
+			for (const control of document.querySelectorAll(".control.reset")) {
+				control.addEventListener("click", onResetClick);
+			}
+
+			render();
+		</script>
+	</body>
+</html>
