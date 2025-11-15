@@ -146,8 +146,13 @@
 						font-size: 2rem;
 						color: mediumblue;
 						touch-action: manipulation;
-						&:hover {
+						&:active {
 							opacity: 1;
+						}
+						&:hover {
+							@media not all and (hover: none) {
+								opacity: 1;
+							}
 						}
 						&.inc {
 							background-color: #ffecbf;
