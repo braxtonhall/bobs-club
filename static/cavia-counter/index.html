@@ -385,19 +385,33 @@
 				try {
 					return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? DEFAULT;
 				} catch {
-					return DEFAULT;
+					return Object.assign({}, DEFAULT);
 				}
 			};
 
-			const save = (state) => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+			const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+			const update = () => {
+				save();
+				render();
+			};
+
+			const state = get();
 
 			const sections = document.getElementsByClassName("counter-section");
 			const values = document.getElementsByClassName("value");
 			const totalValue = document.querySelector("#total .counter .value");
 			const good = document.getElementById("good");
 
+			const pickValue = (state, key, total) => {
+				if (key === "total") {
+					return total;
+				} else {
+					return state[key];
+				}
+			};
+
 			const render = () => {
-				const state = get();
 				const total = Object.values(state).reduce((a, b) => a + b, 0);
 				if (totalValue) {
 					totalValue.style.fontSize = `${Math.max(total / 5, 0) + 1}rem`;
@@ -406,41 +420,27 @@
 					good.style.opacity = String(Math.min(1, total / 30));
 				}
 				for (const value of values) {
-					const type = value.closest(".counter-section").id;
-					if (type === "total") {
-						value.innerText = String(total);
-					} else {
-						if (value.dataset.mult) {
-							value.innerText = String(state[type] * Number(value.dataset.mult));
-						} else {
-							value.innerText = String(state[type]);
-						}
-					}
+					value.innerText = String(
+						pickValue(state, value.closest(".counter-section").id, total) * Number(value.dataset.mult ?? 1),
+					);
 				}
 				for (const section of sections) {
-					const type = section.id;
-					if (type === "total") {
-						section.dataset["count"] = String(total);
-					} else {
-						section.dataset["count"] = String(state[type]);
-					}
+					section.dataset["count"] = String(pickValue(state, section.id, total));
 				}
 			};
 
 			const onControlClick = (type, inc) => () => {
-				const state = get();
 				state[type] += inc;
 				if (state[type] < 0) {
 					state[type] = 0;
 				}
-				save(state);
-				render();
+				update();
 			};
 
 			const onResetClick = () => {
 				if (confirm("reset?")) {
-					save(DEFAULT);
-					render();
+					Object.assign(state, DEFAULT);
+					update();
 				}
 			};
 
